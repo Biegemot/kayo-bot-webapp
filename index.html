@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анкета фурсоны | Kayo Bot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .photo-upload {
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .photo-upload:hover {
+            border-color: #667eea;
+        }
+        
+        .photo-upload input {
+            display: none;
+        }
+        
+        .photo-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: #e8f5e9;
+            border-radius: 10px;
+            color: #2e7d32;
+            margin-top: 20px;
+        }
+        
+        .error-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: #ffebee;
+            border-radius: 10px;
+            color: #c62828;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐰 Анкета фурсоны</h1>
+        <p class="subtitle">Заполните анкету, чтобы поделиться информацией о себе</p>
+        
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="fursona_name">Имя фурсоны *</label>
+                <input type="text" id="fursona_name" name="fursona_name" required placeholder="Например: Мир">
+            </div>
+            
+            <div class="form-group">
+                <label for="species">Вид (вид животного) *</label>
+                <input type="text" id="species" name="species" required placeholder="Например: Рысь">
+            </div>
+            
+            <div class="form-group">
+                <label for="birth_date">Дата рождения</label>
+                <input type="date" id="birth_date" name="birth_date">
+            </div>
+            
+            <div class="form-group">
+                <label for="age">Возраст</label>
+                <input type="number" id="age" name="age" min="0" max="999" placeholder="Например: 25">
+            </div>
+            
+            <div class="form-group">
+                <label for="orientation">Ориентация</label>
+                <select id="orientation" name="orientation">
+                    <option value="">Не указано</option>
+                    <option value="гетеро">Гетеро</option>
+                    <option value="гей">Гей</option>
+                    <option value="лесбиянка">Лесбиянка</option>
+                    <option value="бисексуал">Бисексуал</option>
+                    <option value="пан">Пан</option>
+                    <option value="асексуал">Асексуал</option>
+                    <option value="другое">Другое</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="city">Город</label>
+                <input type="text" id="city" name="city" placeholder="Например: Красноярск">
+            </div>
+            
+            <div class="form-group">
+                <label for="reference_photo">Фото референса</label>
+                <div class="photo-upload" id="photoUpload">
+                    <input type="file" id="reference_photo" name="reference_photo" accept="image/*">
+                    <p>📷 Нажмите, чтобы загрузить фото</p>
+                    <img id="photoPreview" class="photo-preview" style="display: none;">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="looking_for">Ищет</label>
+                <input type="text" id="looking_for" name="looking_for" placeholder="Например: Друзей, общение">
+            </div>
+            
+            <div class="form-group">
+                <label for="personality_type">Тип личности</label>
+                <select id="personality_type" name="personality_type">
+                    <option value="">Не указано</option>
+                    <option value="интроверт">Интроверт</option>
+                    <option value="экстраверт">Экстраверт</option>
+                    <option value="амбиверт">Амбиверт</option>
+                    <option value="другое">Другое</option>
+                </select>
+            </div>
+            
+            <button type="submit">💾 Сохранить анкету</button>
+        </form>
+        
+        <div class="success-message" id="successMessage">
+            ✅ Анкета успешно сохранена!
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+            ❌ Ошибка при сохранении анкеты
+        </div>
+    </div>
+    
+    <script>
+        // Telegram Web App API
+        const tg = window.Telegram?.WebApp;
+        
+        // Photo upload handling
+        const photoUpload = document.getElementById('photoUpload');
+        const photoInput = document.getElementById('reference_photo');
+        const photoPreview = document.getElementById('photoPreview');
+        
+        photoUpload.addEventListener('click', () => {
+            photoInput.click();
+        });
+        
+        photoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    photoPreview.src = e.target.result;
+                    photoPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Form submission
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = {};
+            
+            // Convert FormData to object
+            for (let [key, value] of formData.entries()) {
+                if (value) {
+                    data[key] = value;
+                }
+            }
+            
+            // Add user info from Telegram
+            if (tg) {
+                data.user_id = tg.initDataUnsafe?.user?.id;
+                data.username = tg.initDataUnsafe?.user?.username;
+            }
+            
+            // Send data to bot
+            try {
+                const response = await fetch('/save_profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+                
+                if (response.ok) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    
+                    // Close Web App after 2 seconds
+                    if (tg) {
+                        setTimeout(() => {
+                            tg.close();
+                        }, 2000);
+                    }
+                } else {
+                    document.getElementById('errorMessage').style.display = 'block';
+                    document.getElementById('successMessage').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            }
+        });
+        
+        // Close Web App button (if not in Telegram)
+        if (!tg) {
+            const closeBtn = document.createElement('button');
+            closeBtn.textContent = '❌ Закрыть';
+            closeBtn.style.marginTop = '10px';
+            closeBtn.style.background = '#f44336';
+            closeBtn.addEventListener('click', () => {
+                window.close();
+            });
+            document.querySelector('.container').appendChild(closeBtn);
+        }
+    </script>
+</body>
+</html>
